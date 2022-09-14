@@ -6,6 +6,7 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import lombok.Value;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Locale;
 
@@ -23,6 +24,7 @@ public class DataGenerator {
     private DataGenerator() {
     }
 
+    @BeforeAll
     private static void sendRequest(RegistrationDto user) {
         given()
                 .spec(requestSpec)
@@ -53,11 +55,9 @@ public class DataGenerator {
         }
 
         public static RegistrationDto getRegisteredUser(String status) {
-            RegistrationDto getRegisteredUser = new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
-            sendRequest(getRegisteredUser);
-            // TODO: объявить переменную registeredUser и присвоить ей значение возвращённое getUser(status).
-            // Послать запрос на регистрацию пользователя с помощью вызова sendRequest(registeredUser)
-            return getRegisteredUser;
+            var registeredUser = getUser(status);
+            sendRequest(registeredUser);
+            return registeredUser;
         }
     }
 
